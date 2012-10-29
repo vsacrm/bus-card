@@ -1,6 +1,9 @@
 package zlk.buscardreader;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,7 +37,8 @@ public class MainActivity extends TabActivity {
 	// private String cardId;
 	BusCard currentCard;
 
-	// DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	DateFormat format0 = new SimpleDateFormat();
+	DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -220,7 +224,7 @@ public class MainActivity extends TabActivity {
 					String sql = "insert into QueryLogs (CardId,QueryTime,Banlance) values ('"
 							+ cardId
 							+ "','"
-							+ new Date()
+							+ format1.format(new Date())
 							+ "','"
 							+ card.getBalance() + "')";
 					db.execSQL(sql);
@@ -294,7 +298,7 @@ public class MainActivity extends TabActivity {
 		}
 	}
 
-	private void loadQueryLogs() {
+	private void loadQueryLogs() throws ParseException {
 		try {
 
 			ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
@@ -309,6 +313,9 @@ public class MainActivity extends TabActivity {
 			while (cur.moveToNext()) {
 
 				Map<String, Object> item = new HashMap<String, Object>();
+				// item.put("time",
+				// format1.format(format0.parse(cur.getString(0))));
+
 				item.put("time", cur.getString(0));
 				item.put("banlance", cur.getFloat(1));
 				data.add(item);
@@ -316,8 +323,9 @@ public class MainActivity extends TabActivity {
 
 			ListView lvRecord = (ListView) findViewById(R.id.lvLogs);
 			lvRecord.setAdapter(new SimpleAdapter(this, data,
-					R.layout.record_item, new String[] { "time", "banlance" },
-					new int[] { R.id.txtQueryTime, R.id.txtQueryBanlance }));
+					R.layout.querylog_item,
+					new String[] { "time", "banlance" }, new int[] {
+							R.id.txtQueryTime, R.id.txtQueryBanlance }));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
