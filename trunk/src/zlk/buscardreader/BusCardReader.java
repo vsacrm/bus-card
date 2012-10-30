@@ -198,10 +198,9 @@ public class BusCardReader {
 					BusCardRecord record = new BusCardRecord();
 					// consume time
 					String time = String.format(
-							"%02X%02X.%02X.%02X %02X:%02X ", v[16], v[17],
+							"%02X%02X-%02X-%02X %02X:%02X ", v[16], v[17],
 							v[18], v[19], v[20], v[21], v[22]);
-					DateFormat format1 = new SimpleDateFormat(
-							"yyyy.MM.dd HH:mm");
+					 
 
 					record.setTime(time);
 

@@ -17,6 +17,7 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.os.Bundle;
 import android.app.TabActivity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -37,7 +38,7 @@ public class MainActivity extends TabActivity {
 	// private String cardId;
 	BusCard currentCard;
 
-	DateFormat format0 = new SimpleDateFormat();
+	
 	DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Override
@@ -83,7 +84,7 @@ public class MainActivity extends TabActivity {
 
 								BusCardRecord record = new BusCardRecord();
 
-								record.setTime(time);
+								record.setTime(time.substring(0, time.lastIndexOf(":")));
 
 								record.setConsumeType(type);
 								record.setMoney(Double.parseDouble(money));
@@ -97,7 +98,8 @@ public class MainActivity extends TabActivity {
 
 							// 存储到数据库
 							for (BusCardRecord record : records) {
-								insertRecord(record);
+								// 更新网络数据
+								updateWebRecord(record);
 							}
 
 							// 读取数据
@@ -118,12 +120,14 @@ public class MainActivity extends TabActivity {
 		// 新建一个newTabSpec(newTabSpec)
 		// 设置其标签和图标(setIndicator)
 		// 设置内容(setContent)
-		mTabHost.addTab(mTabHost.newTabSpec("tab_test1").setIndicator("Info")
+		mTabHost.addTab(mTabHost.newTabSpec ("tab_test1").setIndicator("Info")
 				.setContent(R.id.tab1));
 		mTabHost.addTab(mTabHost.newTabSpec("tab_test2")
-				.setIndicator("Records").setContent(R.id.tab2));
+				.setIndicator("Record").setContent(R.id.tab2));
 		mTabHost.addTab(mTabHost.newTabSpec("tab_test3").setIndicator("Log")
 				.setContent(R.id.tab3));
+		mTabHost.addTab(mTabHost.newTabSpec("tab_test4").setIndicator("Stat")
+				.setContent(R.id.tab4));
 
 		onNewIntent(getIntent());
 	}
@@ -143,12 +147,56 @@ public class MainActivity extends TabActivity {
 			if (cur.getCount() > 0)
 				return;
 
-			String sql = "insert into records (CardId,ConsumeTime,money) values ('"
+			String sql = "insert into records (CardId,ConsumeTime,money,Status) values ('"
 					+ record.getCardId()
 					+ "','"
 					+ record.getTime()
 					+ "','"
-					+ record.getMoney() + "')";
+					+ record.getMoney() + "',1)";
+			db.execSQL(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void updateWebRecord(BusCardRecord record) {
+		try {
+			DatabaseHelper openHelper = new DatabaseHelper(this);
+			SQLiteDatabase db = openHelper.getWritableDatabase();
+			// todo: 先查询是不是有重复的
+			String[] col = { "Id", "ConsumeTime", "money", "Status" };
+			Cursor cur = db.query(
+					"records",
+					col,
+					"CardId=? and ConsumeTime=?",
+					new String[] { String.valueOf(currentCard.getId()),
+							record.getTime() }, null, null, null);
+			if (cur.getCount() > 0) {
+				if (cur.moveToNext()) {
+					int status = cur.getInt(3);
+					int id = cur.getInt(0);
+					if (status == 1) {
+						// 更新数据
+						ContentValues updatedValues = new ContentValues();
+						updatedValues.put("Bus", record.getBus());
+						updatedValues
+								.put("StartLocation", record.getInterval());
+						updatedValues.put("Banlance", record.getBalance());
+						updatedValues.put("Status", 2);
+						db.update("records", updatedValues, "id=?",
+								new String[] { String.valueOf(id) });
+					}
+				}
+				return;
+			}
+
+			String sql = "insert into records (CardId,ConsumeTime,money,Status) values ('"
+					+ record.getCardId()
+					+ "','"
+					+ record.getTime()
+					+ "','"
+					+ record.getMoney() + "',2)";
 			db.execSQL(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -225,8 +273,7 @@ public class MainActivity extends TabActivity {
 							+ cardId
 							+ "','"
 							+ format1.format(new Date())
-							+ "','"
-							+ card.getBalance() + "')";
+							+ "','" + card.getBalance() + "')";
 					db.execSQL(sql);
 					// 写卡存数据到数据库
 					ArrayList<BusCardRecord> records = card.getRecords();

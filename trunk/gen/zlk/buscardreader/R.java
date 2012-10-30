@@ -23,20 +23,21 @@ public final class R {
         public static final int btnDownload=0x7f090008;
         public static final int lvLogs=0x7f09000b;
         public static final int lvNetworkRecords=0x7f090009;
-        public static final int menu_settings=0x7f090010;
+        public static final int menu_settings=0x7f090011;
         public static final int tab1=0x7f090000;
         public static final int tab2=0x7f090006;
         public static final int tab3=0x7f09000a;
+        public static final int tab4=0x7f09000c;
         public static final int toolbar=0x7f090007;
         public static final int txtCardBalance=0x7f090005;
         public static final int txtCardNumber=0x7f090001;
         public static final int txtCardUsedTimes=0x7f090004;
         public static final int txtCardValidDate=0x7f090003;
         public static final int txtCardVersion=0x7f090002;
-        public static final int txtMoney=0x7f09000f;
-        public static final int txtQueryBanlance=0x7f09000d;
-        public static final int txtQueryTime=0x7f09000c;
-        public static final int txtTime=0x7f09000e;
+        public static final int txtMoney=0x7f090010;
+        public static final int txtQueryBanlance=0x7f09000e;
+        public static final int txtQueryTime=0x7f09000d;
+        public static final int txtTime=0x7f09000f;
     }
     public static final class layout {
         public static final int main=0x7f030000;

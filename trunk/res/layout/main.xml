@@ -124,9 +124,9 @@
                             <Button
                                 android:id="@+id/btnDownload"
                                 android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:layout_gravity="center"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:gravity="center"
                                 android:text="从公交网同步信息"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -135,6 +135,10 @@
                             android:id="@+id/lvNetworkRecords"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_above="@id/toolbar"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
                             android:fastScrollEnabled="true" >
                         </ListView>
                     </RelativeLayout>
@@ -151,6 +155,45 @@
                         android:layout_height="wrap_content"
                         android:fastScrollEnabled="true" >
                     </ListView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="刷卡金额柱状图/每周"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="坐车时段统计柱状图"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="坐车时长统计"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="车次统计排序"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
