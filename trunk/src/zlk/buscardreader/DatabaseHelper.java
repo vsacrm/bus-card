@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String sql = "Create table records (Id int primary key ,CardId int not null,ConsumeTime varchar(20) not null,money text not null);";
+		String sql = "Create table records (Id int primary key ,CardId int not null,ConsumeTime varchar(20) not null,money text not null,Bus varchar(50),StartLocation varchar(30),Banlance float,Status int);";
 		String sql2 = "create table BusCards (Id INTEGER PRIMARY KEY AUTOINCREMENT,CodeNumber VARCHAR(20) not null,Version varchar(20) not null,UsedTimes INT, ValidPeriod  VARCHAR(30));";
 		String sql3 = "Create table QueryLogs (Id int primary key ,CardId int not null,QueryTime VARCHAR(40) not null,Banlance text not null);";
 		db.execSQL(sql);
