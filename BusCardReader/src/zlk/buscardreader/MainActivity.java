@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -38,7 +39,6 @@ public class MainActivity extends TabActivity {
 	// private String cardId;
 	BusCard currentCard;
 
-	
 	DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Override
@@ -66,7 +66,7 @@ public class MainActivity extends TabActivity {
 							if (tables.size() < 7) {
 								// txtContent.setText("再次查询请间隔30秒");
 								return;
-	 						}
+							}
 							Elements rows = doc.select("table").get(7)
 									.select("tr");
 							int count = rows.size();
@@ -84,7 +84,8 @@ public class MainActivity extends TabActivity {
 
 								BusCardRecord record = new BusCardRecord();
 
-								record.setTime(time.substring(0, time.lastIndexOf(":")));
+								record.setTime(time.substring(0,
+										time.lastIndexOf(":")));
 
 								record.setConsumeType(type);
 								record.setMoney(Double.parseDouble(money));
@@ -120,10 +121,10 @@ public class MainActivity extends TabActivity {
 		// 新建一个newTabSpec(newTabSpec)
 		// 设置其标签和图标(setIndicator)
 		// 设置内容(setContent)
-		mTabHost.addTab(mTabHost.newTabSpec ("tab_test1").setIndicator("Info")
+		mTabHost.addTab(mTabHost.newTabSpec("tab_test1").setIndicator("Info")
 				.setContent(R.id.tab1));
-		mTabHost.addTab(mTabHost.newTabSpec("tab_test2")
-				.setIndicator("Record").setContent(R.id.tab2));
+		mTabHost.addTab(mTabHost.newTabSpec("tab_test2").setIndicator("Record")
+				.setContent(R.id.tab2));
 		mTabHost.addTab(mTabHost.newTabSpec("tab_test3").setIndicator("Log")
 				.setContent(R.id.tab3));
 		mTabHost.addTab(mTabHost.newTabSpec("tab_test4").setIndicator("Stat")
@@ -206,8 +207,26 @@ public class MainActivity extends TabActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		// getMenuInflater().inflate(R.menu.main, menu);
+		menu.add(Menu.NONE, Menu.FIRST + 1, 1, "卡片管理");
+		menu.add(Menu.NONE, Menu.FIRST + 2, 2, "查询日志");
+		menu.add(Menu.NONE, Menu.FIRST + 3, 3, "退出程序");
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case Menu.FIRST + 1:
+			break;
+		case Menu.FIRST + 2:
+			// todo:开启新的activity
+			break;
+		case Menu.FIRST + 3:
+			finish();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
